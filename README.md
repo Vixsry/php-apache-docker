@@ -48,7 +48,7 @@
 
 ```bash
 git clone https://github.com/Vixsry/php-apache-docker.git
-cd nama-repository
+cd php-apache-docker
 ```
 
 ### 2. Konfigurasi Lingkungan
