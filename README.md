@@ -47,7 +47,7 @@
 ### 1. Kloning Repositori
 
 ```bash
-git clone https://github.com/anda/nama-repository.git
+git clone https://github.com/Vixsry/php-apache-docker.git
 cd nama-repository
 ```
 
