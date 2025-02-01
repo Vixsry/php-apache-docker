@@ -1,197 +1,255 @@
-# 🐳 PHP 8.3 Development Environment with Docker
+# 🚀 VIKS-SERVER Professional Edition
 
 <div align="center">
 
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP_8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![MariaDB](https://img.shields.io/badge/MariaDB_11.3-003545?style=for-the-badge&logo=mariadb&logoColor=white)
-![Adminer](https://img.shields.io/badge/Adminer-34567C?style=for-the-badge&logo=adminer&logoColor=white)
-![Caddy](https://img.shields.io/badge/Caddy-00ADD8?style=for-the-badge&logo=caddy&logoColor=white)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)](https://mariadb.org/)
+[![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+
+🌟 Modern Web Development Stack | 🛡️ Enterprise-Grade Security | ⚡ High Performance | 🔧 Easy Management
 
 </div>
 
-## 📋 Overview
+## 📋 Table of Contents
+- [✨ Features](#-features)
+- [🔧 Requirements](#-requirements)
+- [⚡ Quick Start](#-quick-start)
+- [🎯 Services](#-services)
+- [🛠️ Configuration](#️-configuration)
+- [🔒 Security](#-security)
+- [📈 Performance](#-performance)
+- [🔄 Backup & Restore](#-backup--restore)
+- [📝 Development](#-development)
+- [🚨 Troubleshooting](#-troubleshooting)
+- [🤝 Contributing](#-contributing)
 
-This is a complete development environment setup using Docker Compose, featuring:
+## ✨ Features
 
-- PHP 8.3 with Apache
-- MariaDB 11.3
-- Adminer for database management
-- Caddy as reverse proxy with automatic HTTPS
+### 🔥 Core Components
+- 🌐 **Nginx** (Latest Alpine) - High-performance web server
+- 💻 **PHP 8.2-FPM** - Latest stable PHP version
+- 📦 **MariaDB 10.6** - Robust database server
+- 🎯 **Redis & Memcached** - Advanced caching
+- 🔍 **Elasticsearch** - Powerful search engine
+- 📨 **MailHog** - Email testing tool
+- 🔄 **Traefik** - Modern reverse proxy
 
-## 🚀 Services & Ports
+### 🛡️ Security Features
+- 🔐 SSL/TLS Configuration
+- 🛡️ Modern Security Headers
+- 🔒 Container Isolation
+- 🎫 Role-Based Access
+- 🔑 Environment Variables
+
+### ⚡ Performance Optimizations
+- 📈 Nginx Fast-CGI Caching
+- 💾 Redis Object Caching
+- 🚀 PHP OPcache
+- 🎯 MariaDB Query Cache
+- 📊 Elasticsearch Indexing
+
+## 🔧 Requirements
+
+```bash
+# System Requirements
+CPU: 2+ cores
+RAM: 4GB+ (8GB recommended)
+Storage: 20GB+ SSD
+
+# Software Requirements
+Docker: 20.10+
+Docker Compose: 2.0+
+Git: 2.0+
+```
+
+## ⚡ Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/viks-server.git
+
+# Navigate to project directory
+cd viks-server
+
+# Copy environment file
+cp .env.example .env
+
+# Start the server
+docker-compose up -d
+
+# Check status
+docker-compose ps
+```
+
+## 🎯 Services
 
 | Service | Port | Description |
 |---------|------|-------------|
-| PHP Apache | 8083 | Web server |
-| MariaDB | 3307 | Database server |
-| Adminer | 8084 | Database management |
-| Caddy | 8085, 8443 | HTTP/HTTPS proxy |
+| 🌐 Nginx | 80, 443 | Web Server |
+| 💾 MariaDB | 3306 | Database Server |
+| 🔧 phpMyAdmin | 8080 | Database Management |
+| 📨 MailHog | 8025 | Email Testing |
+| 🔍 Elasticsearch | 9200 | Search Engine |
+| 🔄 Traefik Dashboard | 8081 | Proxy Management |
 
-## 🛠️ Prerequisites
+## 🛠️ Configuration
 
-- Docker Engine
-- Docker Compose
-- Git (optional)
-
-## 📦 Installation
-
-1. Clone this repository (or download the files):
+### 📝 Environment Variables
 ```bash
-git clone https://github.com/Vixsry/php-apache-docker.git
-cd <project-directory>
+# Database Configuration
+DB_ROOT_PASSWORD=your_secure_password
+DB_NAME=your_database
+DB_USER=your_user
+DB_PASSWORD=your_password
+
+# Redis Configuration
+REDIS_PASSWORD=your_redis_password
+
+# PHP Configuration
+PHP_MEMORY_LIMIT=512M
+PHP_MAX_EXECUTION_TIME=300
 ```
 
-2. Configure environment variables:
-```bash
-# Edit these values in docker-compose.yml
-MYSQL_ROOT_PASSWORD: "your_root_password"
-MYSQL_DATABASE: "your_database"
-MYSQL_USER: "your_user"
-MYSQL_PASSWORD: "your_password"
-CLOUDFLARE_API_TOKEN: "your_cloudflare_api_token"
-```
-
-3. Start the environment:
-```bash
-docker-compose up -d
-```
-
-## 🗂️ Project Structure
-
-```
-.
-├── app/                    # PHP application files
-├── apache/
-│   └── vhost.conf         # Apache virtual host configuration
-├── php/
-│   └── custom.ini         # PHP custom configuration
-├── mysql/
-│   ├── my.cnf            # MariaDB configuration
-│   └── initdb.d/         # Database initialization scripts
-├── Caddyfile             # Caddy server configuration
-└── docker-compose.yml    # Docker Compose configuration
-```
-
-## 🔒 Security Features
-
-- Read-only containers
-- No new privileges escalation
-- Separate frontend and backend networks
-- Custom user for Apache (www-data)
-- Secure MariaDB configuration
-
-## 🌐 Networks
-
-- `frontend`: External-facing network for web services
-- `backend`: Internal network for database and service communication
-
-## 💾 Volumes
-
-- `mariadb_data`: Persistent database storage
-- `caddy_data`: Caddy TLS certificates and data
-- `caddy_config`: Caddy configuration storage
-
-## ⚙️ Configuration
-
-### PHP Custom Configuration
+### 🔧 Custom PHP Configuration
 ```ini
-# ./php/custom.ini
-# Add your PHP configuration here
+; php/custom.ini
+memory_limit = ${PHP_MEMORY_LIMIT}
+max_execution_time = ${PHP_MAX_EXECUTION_TIME}
+upload_max_filesize = 100M
+post_max_size = 100M
 ```
 
-### Apache Virtual Host
-```apache
-# ./apache/vhost.conf
-# Add your Apache configuration here
-```
+## 🚀 Usage Examples
 
-### MariaDB Configuration
-```ini
-# ./mysql/my.cnf
-# Add your MariaDB configuration here
-```
-
-### Caddy Configuration
-```caddyfile
-# ./Caddyfile
-# Add your Caddy configuration here
-```
-
-## 🛡️ Environment Security
-
-All services are configured with:
-- `no-new-privileges:true`
-- `read_only: true`
-- Specific user permissions
-- Network isolation
-- Volume access controls
-
-## 📝 Usage
-
-### Starting Services
+### 🌐 Deploy a Website
 ```bash
+# Copy your website files
+cp -r your-website/* www/
+
+# Set permissions
+chmod -R 755 www/
+chown -R www-data:www-data www/
+
+# Restart containers
+docker-compose restart
+```
+
+### 💾 Database Management
+```bash
+# Create database backup
+./scripts/backup.sh
+
+# Restore database
+docker exec -i viks-db mysql -uroot -p"$DB_ROOT_PASSWORD" < backup.sql
+
+# Access MySQL CLI
+docker exec -it viks-db mysql -uroot -p"$DB_ROOT_PASSWORD"
+```
+
+## 🔄 Maintenance Commands
+
+```bash
+# Update all containers
+docker-compose pull
 docker-compose up -d
+
+# View logs
+docker-compose logs -f [service_name]
+
+# Restart specific service
+docker-compose restart [service_name]
+
+# Check resource usage
+docker stats
 ```
 
-### Stopping Services
+## 🚨 Troubleshooting
+
+### 🔍 Common Issues
 ```bash
-docker-compose down
+# Check logs
+docker-compose logs nginx
+docker-compose logs php
+docker-compose logs mariadb
+
+# Verify permissions
+ls -la www/
+ls -la mysql/data/
+
+# Check container status
+docker-compose ps
 ```
 
-### Viewing Logs
+## 🎯 Production Checklist
+
+- [ ] Update all default passwords
+- [ ] Configure SSL certificates
+- [ ] Set up backup routine
+- [ ] Configure firewall rules
+- [ ] Enable monitoring
+- [ ] Test email functionality
+- [ ] Optimize PHP settings
+- [ ] Configure caching
+
+## 📈 Monitoring
+
+### 🔍 Resource Monitoring
 ```bash
-docker-compose logs [service]
+# CPU and Memory Usage
+docker stats
+
+# Disk Usage
+df -h
+
+# Network Stats
+docker network inspect viks-network
 ```
 
-### Accessing Services
-
-- Website: `http://localhost:8083`
-- Adminer: `http://localhost:8084`
-- Caddy: `http://localhost:8085` or `https://localhost:8443`
-- MariaDB: `localhost:3307`
-
-## 🔍 Troubleshooting
-
-1. **Ports Already in Use**
+### 📊 Log Monitoring
 ```bash
-# Check ports in use
-sudo lsof -i :<port>
+# Access Logs
+tail -f nginx/logs/access.log
 
-# Change ports in docker-compose.yml if needed
+# Error Logs
+tail -f nginx/logs/error.log
+
+# PHP-FPM Logs
+docker-compose logs php
 ```
-
-2. **Permission Issues**
-```bash
-# Fix permissions if needed
-chmod -R 755 app/
-chown -R www-data:www-data app/
-```
-
-## 📚 Additional Resources
-
-- [PHP Documentation](https://www.php.net/docs.php)
-- [MariaDB Documentation](https://mariadb.org/documentation/)
-- [Adminer Documentation](https://www.adminer.org/en/documentation/)
-- [Caddy Documentation](https://caddyserver.com/docs/)
 
 ## 🤝 Contributing
 
-Feel free to:
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+We welcome contributions! Please follow these steps:
 
-## 📄 License
+1. 🍴 Fork the repository
+2. 🔧 Create your feature branch
+3. 💻 Commit your changes
+4. 🚀 Push to the branch
+5. 🎯 Create a Pull Request
+
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Docker Community
+- Nginx Team
+- PHP Development Team
+- MariaDB Foundation
+- Redis Labs
+- Elasticsearch Team
 
 ---
 
 <div align="center">
 
-Made with ❤️ by Vixsry
+📦 **VIKS-SERVER** - Made with ❤️ for Professional Web Development
+
+[![Stars](https://img.shields.io/github/stars/your-username/viks-server?style=social)](https://github.com/your-username/viks-server)
+[![Follow](https://img.shields.io/twitter/follow/your-username?style=social)](https://twitter.com/your-username)
 
 </div>
