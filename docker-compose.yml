@@ -1,4 +1,4 @@
-version: '1.0'
+version: '3.9'
 
 services:
   web:
@@ -6,7 +6,7 @@ services:
     container_name: php8.3-apache
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8083:80"  # Web server PHP Apache di port 8083
     volumes:
       - ./app:/var/www/html:ro
       - ./php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
@@ -15,94 +15,89 @@ services:
       TZ: "Asia/Jakarta"
       APACHE_RUN_USER: www-data
       APACHE_RUN_GROUP: www-data
-    env_file:
-      - .env.php
-    build:
-      context: ./php
-      dockerfile: Dockerfile
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     networks:
       - backend
+      - frontend
     security_opt:
       - no-new-privileges:true
-      - seccomp:unconfined
     read_only: true
+    hostname: web
 
   db:
     image: mariadb:11.3
     container_name: mariadb
     restart: unless-stopped
+    ports:
+      - "3307:3306"  # Ganti port MySQL agar tidak bentrok
     environment:
+      MYSQL_ROOT_PASSWORD: "your_root_password"
+      MYSQL_DATABASE: "your_database"
+      MYSQL_USER: "your_user"
+      MYSQL_PASSWORD: "your_password"
       TZ: "Asia/Jakarta"
-    env_file:
-      - .env.db
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mysql/my.cnf:/etc/mysql/my.cnf:ro
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d:ro
-    healthcheck:
-      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
     networks:
       - backend
     security_opt:
       - no-new-privileges:true
     read_only: true
+    hostname: db
 
   adminer:
     image: adminer:latest
     container_name: adminer
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8084:8080"  # Adminer di port 8084
     environment:
       TZ: "Asia/Jakarta"
       ADMINER_DESIGN: pepa
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     networks:
       - backend
     security_opt:
       - no-new-privileges:true
     read_only: true
+    hostname: adminer
 
-  backup:
-    image: fradelg/mysql-cron-backup
-    container_name: mysql-backup
+  caddy:
+    image: caddy:latest
+    container_name: caddy
     restart: unless-stopped
+    ports:
+      - "8085:80"    # HTTP Caddy di 8085
+      - "8443:443"   # HTTPS Caddy di 8443
     volumes:
-      - ./backups:/backup
-      - mariadb_data:/var/lib/mysql:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
     environment:
-      - MYSQL_HOST=db
-      - MYSQL_USER=root
-      - MYSQL_PASS=${MYSQL_ROOT_PASSWORD}
-      - MAX_BACKUPS=7
-      - INIT_BACKUP=1
-      - CRON_TIME=0 3 * * *
-    depends_on:
-      db:
-        condition: service_healthy
+      CLOUDFLARE_API_TOKEN: "your_cloudflare_api_token"
     networks:
+      - frontend
       - backend
+    security_opt:
+      - no-new-privileges:true
     read_only: true
+    hostname: caddy
 
 networks:
   backend:
     driver: bridge
-    driver_opts:
-      com.docker.network.bridge.default_bridge: false
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
-          gateway: 172.28.0.1
+
+  frontend:
+    driver: bridge
 
 volumes:
   mariadb_data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
     driver: local
