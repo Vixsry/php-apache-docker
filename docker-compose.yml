@@ -1,16 +1,16 @@
-version: '3.9'
+version: '1.0'
 
 services:
   web:
-    image: php:8.2-apache
-    container_name: php8.2-apache
+    image: php:8.3-apache
+    container_name: php8.3-apache
     restart: unless-stopped
     ports:
       - "80:80"
     volumes:
-      - ./app:/var/www/html/
-      - ./php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
-      - ./apache/vhost.conf:/etc/apache2/sites-available/000-default.conf
+      - ./app:/var/www/html:ro
+      - ./php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./apache/vhost.conf:/etc/apache2/sites-available/000-default.conf:ro
     environment:
       TZ: "Asia/Jakarta"
       APACHE_RUN_USER: www-data
@@ -27,13 +27,11 @@ services:
       - backend
     security_opt:
       - no-new-privileges:true
-    cap_drop:
-      - ALL
-    cap_add:
-      - NET_BIND_SERVICE
+      - seccomp:unconfined
+    read_only: true
 
   db:
-    image: mariadb:11.2
+    image: mariadb:11.3
     container_name: mariadb
     restart: unless-stopped
     environment:
@@ -42,8 +40,8 @@ services:
       - .env.db
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/mysql/my.cnf
-      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/my.cnf:/etc/mysql/my.cnf:ro
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
       interval: 15s
@@ -54,8 +52,7 @@ services:
       - backend
     security_opt:
       - no-new-privileges:true
-    cap_drop:
-      - ALL
+    read_only: true
 
   adminer:
     image: adminer:latest
@@ -73,6 +70,7 @@ services:
       - backend
     security_opt:
       - no-new-privileges:true
+    read_only: true
 
   backup:
     image: fradelg/mysql-cron-backup
@@ -93,6 +91,7 @@ services:
         condition: service_healthy
     networks:
       - backend
+    read_only: true
 
 networks:
   backend:
