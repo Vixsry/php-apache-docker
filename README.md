@@ -38,7 +38,7 @@ This is a complete development environment setup using Docker Compose, featuring
 
 1. Clone this repository (or download the files):
 ```bash
-git clone <repository-url>
+git clone https://github.com/Vixsry/php-apache-docker.git
 cd <project-directory>
 ```
 
