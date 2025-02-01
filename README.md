@@ -1,133 +1,197 @@
-# 🐘 PHP & MariaDB Docker Compose Development Environment 🚢
+# 🐳 PHP 8.3 Development Environment with Docker
 
 <div align="center">
-  <img src="https://img.shields.io/badge/PHP-8.2-777BB3?style=flat-square&logo=php" alt="PHP Version">
-  <img src="https://img.shields.io/badge/MariaDB-11.2-1F305F?style=flat-square&logo=mariadb" alt="MariaDB Version">
-  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker" alt="Docker Compose">
-  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
+
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP_8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MariaDB](https://img.shields.io/badge/MariaDB_11.3-003545?style=for-the-badge&logo=mariadb&logoColor=white)
+![Adminer](https://img.shields.io/badge/Adminer-34567C?style=for-the-badge&logo=adminer&logoColor=white)
+![Caddy](https://img.shields.io/badge/Caddy-00ADD8?style=for-the-badge&logo=caddy&logoColor=white)
+
 </div>
 
-## 🌟 Fitur Utama
+## 📋 Overview
 
-- 🐘 PHP 8.2 dengan Apache
-- 💽 MariaDB 11.2 terbaru
-- 🔍 Adminer untuk manajemen database
-- 💾 Backup otomatis database
-- 🛡️ Konfigurasi keamanan yang ditingkatkan
+This is a complete development environment setup using Docker Compose, featuring:
 
-## 📊 OSS Insight Statistics
+- PHP 8.3 with Apache
+- MariaDB 11.3
+- Adminer for database management
+- Caddy as reverse proxy with automatic HTTPS
 
-[![OSS Insight](https://img.shields.io/badge/OSS%20Insight-Project%20Analysis-blue?style=for-the-badge&logo=github)](https://ossinsight.io/analyze/)
+## 🚀 Services & Ports
 
-### 🔢 Statistik Proyek
+| Service | Port | Description |
+|---------|------|-------------|
+| PHP Apache | 8083 | Web server |
+| MariaDB | 3307 | Database server |
+| Adminer | 8084 | Database management |
+| Caddy | 8085, 8443 | HTTP/HTTPS proxy |
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://ossinsight.io/analyze/">
-        <img src="https://img.shields.io/badge/Total%20Commits-Dynamic-brightgreen?style=for-the-badge" alt="Total Commits">
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://ossinsight.io/analyze/">
-        <img src="https://img.shields.io/badge/Contributors-Dynamic-blue?style=for-the-badge" alt="Contributors">
-      </a>
-    </td>
-  </tr>
-</table>
+## 🛠️ Prerequisites
 
-## 🚀 Prasyarat
+- Docker Engine
+- Docker Compose
+- Git (optional)
 
-- 🐳 Docker (versi terbaru)
-- 🐋 Docker Compose (versi 3.9+)
-- 💻 Sistem Operasi: Linux, macOS, atau Windows dengan Docker Desktop
+## 📦 Installation
 
-## 🔧 Instalasi & Pengaturan
-
-### 1. Kloning Repositori
-
+1. Clone this repository (or download the files):
 ```bash
-git clone https://github.com/Vixsry/php-apache-docker.git
-cd php-apache-docker
+git clone <repository-url>
+cd <project-directory>
 ```
 
-### 2. Konfigurasi Lingkungan
-
-1. Salin file environment:
+2. Configure environment variables:
 ```bash
-cp .env.example .env.php
-cp .env.example .env.db
+# Edit these values in docker-compose.yml
+MYSQL_ROOT_PASSWORD: "your_root_password"
+MYSQL_DATABASE: "your_database"
+MYSQL_USER: "your_user"
+MYSQL_PASSWORD: "your_password"
+CLOUDFLARE_API_TOKEN: "your_cloudflare_api_token"
 ```
 
-2. Edit kredensial di file `.env.php` dan `.env.db`:
+3. Start the environment:
 ```bash
-nano .env.php
-nano .env.db
+docker-compose up -d
 ```
 
-### 3. Membangun dan Menjalankan Kontainer
-
-```bash
-docker-compose up --build -d
-```
-
-### 4. Akses Aplikasi
-
-- 🌐 Aplikasi Web: `http://localhost`
-- 🗃️ Adminer: `http://localhost:8080`
-
-## 🔒 Keamanan
-
-- Tidak ada hak istimewa berlebihan pada kontainer
-- Pembatasan kemampuan sistem
-- Penggunaan file environment terpisah
-- Backup otomatis database
-
-## 📦 Struktur Proyek
+## 🗂️ Project Structure
 
 ```
 .
-├── app/                # Kode sumber PHP
-├── backups/            # Cadangan database
-├── mysql/              # Konfigurasi MariaDB
-│   ├── my.cnf
-│   └── initdb.d/
-├── php/                # Konfigurasi PHP
-│   ├── Dockerfile
-│   └── custom.ini
-├── docker-compose.yml
-└── README.md
+├── app/                    # PHP application files
+├── apache/
+│   └── vhost.conf         # Apache virtual host configuration
+├── php/
+│   └── custom.ini         # PHP custom configuration
+├── mysql/
+│   ├── my.cnf            # MariaDB configuration
+│   └── initdb.d/         # Database initialization scripts
+├── Caddyfile             # Caddy server configuration
+└── docker-compose.yml    # Docker Compose configuration
 ```
 
-## 💡 Tips Pengembangan
+## 🔒 Security Features
 
-- Gunakan `docker-compose logs [service]` untuk debug
-- Perbarui `.env` files dengan kredensial yang aman
-- Nonaktifkan akses root eksternal untuk database
+- Read-only containers
+- No new privileges escalation
+- Separate frontend and backend networks
+- Custom user for Apache (www-data)
+- Secure MariaDB configuration
 
-## 🤝 Kontribusi
+## 🌐 Networks
 
-1. Fork repositori
-2. Buat branch fitur (`git checkout -b fitur-keren`)
-3. Commit perubahan (`git commit -m 'Tambah fitur keren'`)
-4. Push ke branch (`git push origin fitur-keren`)
-5. Buat Pull Request
+- `frontend`: External-facing network for web services
+- `backend`: Internal network for database and service communication
 
-## 📜 Lisensi
+## 💾 Volumes
 
-Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
+- `mariadb_data`: Persistent database storage
+- `caddy_data`: Caddy TLS certificates and data
+- `caddy_config`: Caddy configuration storage
 
-## 🛠️ Teknologi yang Digunakan
+## ⚙️ Configuration
 
-<div align="center">
-  <img src="https://img.shields.io/badge/PHP-777BB3?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
-  <img src="https://img.shields.io/badge/Apache-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="Apache">
-  <img src="https://img.shields.io/badge/MariaDB-1F305F?style=for-the-badge&logo=mariadb&logoColor=white" alt="MariaDB">
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</div>
+### PHP Custom Configuration
+```ini
+# ./php/custom.ini
+# Add your PHP configuration here
+```
+
+### Apache Virtual Host
+```apache
+# ./apache/vhost.conf
+# Add your Apache configuration here
+```
+
+### MariaDB Configuration
+```ini
+# ./mysql/my.cnf
+# Add your MariaDB configuration here
+```
+
+### Caddy Configuration
+```caddyfile
+# ./Caddyfile
+# Add your Caddy configuration here
+```
+
+## 🛡️ Environment Security
+
+All services are configured with:
+- `no-new-privileges:true`
+- `read_only: true`
+- Specific user permissions
+- Network isolation
+- Volume access controls
+
+## 📝 Usage
+
+### Starting Services
+```bash
+docker-compose up -d
+```
+
+### Stopping Services
+```bash
+docker-compose down
+```
+
+### Viewing Logs
+```bash
+docker-compose logs [service]
+```
+
+### Accessing Services
+
+- Website: `http://localhost:8083`
+- Adminer: `http://localhost:8084`
+- Caddy: `http://localhost:8085` or `https://localhost:8443`
+- MariaDB: `localhost:3307`
+
+## 🔍 Troubleshooting
+
+1. **Ports Already in Use**
+```bash
+# Check ports in use
+sudo lsof -i :<port>
+
+# Change ports in docker-compose.yml if needed
+```
+
+2. **Permission Issues**
+```bash
+# Fix permissions if needed
+chmod -R 755 app/
+chown -R www-data:www-data app/
+```
+
+## 📚 Additional Resources
+
+- [PHP Documentation](https://www.php.net/docs.php)
+- [MariaDB Documentation](https://mariadb.org/documentation/)
+- [Adminer Documentation](https://www.adminer.org/en/documentation/)
+- [Caddy Documentation](https://caddyserver.com/docs/)
+
+## 🤝 Contributing
+
+Feel free to:
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-  👨‍💻 Dibuat dengan ❤️ oleh Vixsry
+
+Made with ❤️ by [Your Name]
+
 </div>
