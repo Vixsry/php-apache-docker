@@ -38,8 +38,8 @@ This is a complete development environment setup using Docker Compose, featuring
 
 1. Clone this repository (or download the files):
 ```bash
-git clone <repository-url>
-cd <project-directory>
+git clone https://github.com/Vixsry/php-apache-docker
+cd php-apache-docker
 ```
 
 2. Configure environment variables:
